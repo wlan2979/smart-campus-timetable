@@ -1,0 +1,10 @@
+<resources>
+    <string name="widget_today_label">桃课 · 今日概览（课程+倒计时+天气）</string>
+    <string name="widget_today_desc">一屏聚合今天日期教学周、下一节课倒计时、实时天气与今日课程时间教室，点击直达课表</string>
+    <string name="widget_next_label">桃课 · 下一节课倒计时</string>
+    <string name="widget_next_desc">实时计算下一节课剩余时间与教室位置</string>
+    <string name="widget_week_label">桃课 · 本周课表</string>
+    <string name="widget_week_desc">清晰概览周一至周日整周课程安排，自适应桌面尺寸</string>
+    <string name="widget_weather_pe_label">桃课 · 天气与体育课提醒</string>
+    <string name="widget_weather_pe_desc">查看当前城市气温、今日体育课与恶劣天气预警</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!--
+        桃课网络安全策略：
+        1. 仅信任系统根证书（不信任用户自装代理/不受信任证书）；
+        2. 外部公共天气与节假日数据源严格强制 HTTPS，禁止明文降级；
+        3. 因中国大陆部分高校教务系统与高职院校内网仍使用 HTTP（目录中实测 60+ 所），
+           基础配置保留对校园教务网页的兼容，云同步生产环境请配置 HTTPS。
+    -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">open-meteo.com</domain>
+        <domain includeSubdomains="true">qweather.com</domain>
+        <domain includeSubdomains="true">qweatherapi.com</domain>
+        <domain includeSubdomains="true">githubusercontent.com</domain>
+        <domain includeSubdomains="true">jsdelivr.net</domain>
+    </domain-config>
+</network-security-config>

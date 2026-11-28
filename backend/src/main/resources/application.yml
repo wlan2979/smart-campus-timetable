@@ -1,0 +1,38 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: smart-campus-timetable-backend
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/campus_timetable}
+    username: ${POSTGRES_USER:timetable_user}
+    password: ${POSTGRES_PASSWORD:CHANGE_ME_STRONG_DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:dev-only-insecure-secret-change-in-production-at-least-32-chars}
+    access-expiration-seconds: ${JWT_ACCESS_EXPIRATION_SECONDS:7200}
+    refresh-expiration-seconds: ${JWT_REFRESH_EXPIRATION_SECONDS:2592000}
+  sms:
+    provider: ${SMS_PROVIDER:debug_log}
+    code-ttl-seconds: 300
+    rate-limit-seconds: 60
+    aliyun:
+      access-key-id: ${ALIYUN_SMS_ACCESS_KEY_ID:}
+      access-key-secret: ${ALIYUN_SMS_ACCESS_KEY_SECRET:}
+      sign-name: ${ALIYUN_SMS_SIGN_NAME:}
+      template-code: ${ALIYUN_SMS_TEMPLATE_CODE:}
+      endpoint: ${ALIYUN_SMS_ENDPOINT:dysmsapi.aliyuncs.com}
+  weather:
+    qweather-api-host: ${QWEATHER_API_HOST:}
+    qweather-api-key: ${QWEATHER_API_KEY:}
+  holiday:
+    remote-url-template: ${HOLIDAY_REMOTE_URL_TEMPLATE:https://raw.githubusercontent.com/NateScarlet/holiday-cn/master/{year}.json}

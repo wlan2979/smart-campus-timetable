@@ -1,0 +1,56 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: campus-timetable-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-campus_timetable}
+      POSTGRES_USER: ${POSTGRES_USER:-timetable_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-CHANGE_ME_STRONG_DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-timetable_user} -d ${POSTGRES_DB:-campus_timetable}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: campus-timetable-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    profiles:
+      - with-redis
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: campus-timetable-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "${SERVER_PORT:-8080}:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
+      DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-campus_timetable}
+      POSTGRES_USER: ${POSTGRES_USER:-timetable_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-CHANGE_ME_STRONG_DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET:?请先在 .env 中设置至少 32 位 JWT_SECRET}
+      SMS_PROVIDER: ${SMS_PROVIDER:-aliyun}
+      ALIYUN_SMS_ACCESS_KEY_ID: ${ALIYUN_SMS_ACCESS_KEY_ID:-}
+      ALIYUN_SMS_ACCESS_KEY_SECRET: ${ALIYUN_SMS_ACCESS_KEY_SECRET:-}
+      ALIYUN_SMS_SIGN_NAME: ${ALIYUN_SMS_SIGN_NAME:-}
+      ALIYUN_SMS_TEMPLATE_CODE: ${ALIYUN_SMS_TEMPLATE_CODE:-}
+      QWEATHER_API_HOST: ${QWEATHER_API_HOST:-}
+      QWEATHER_API_KEY: ${QWEATHER_API_KEY:-}
+      HOLIDAY_REMOTE_URL_TEMPLATE: ${HOLIDAY_REMOTE_URL_TEMPLATE:-https://raw.githubusercontent.com/NateScarlet/holiday-cn/master/{year}.json}
+
+volumes:
+  postgres_data:

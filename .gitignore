@@ -1,0 +1,29 @@
+# Gradle / Android
+.gradle/
+.kotlin/
+**/build/
+local.properties
+*.iml
+.idea/
+.DS_Store
+*.apk
+*.aab
+*.ap_
+*.dex
+*.keystore
+*.jks
+captures/
+.cxx/
+.externalNativeBuild/
+
+# Backend / Java / Docker
+backend/build/
+backend/.gradle/
+*.log
+.env
+.env.local
+.env.prod
+
+# Test outputs / temp
+*.hprof
+*.tmp
